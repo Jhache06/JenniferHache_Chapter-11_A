@@ -2,9 +2,35 @@ Technical Design Document Template
 
 Name: Jennifer Hache
 
-Date Created: Nov 9, 2024
+Date Created: Nov 11, 2024
 
 Program Description: deck of 52 cards is shuffled and a Poker hand of 5 cards is dealt. It uses the Deck class to manage the deck of cards, and the game asks the player to replace specific cards in their hand.
+
+Class: Deck
+1. Desc: deck of cards and includes methods to deal cards, shuffle them, and replace cards in a player's hand
+
+Methods:
+
+1a. deal_initial_hand(self, num_cards=5)
+dealing an initial hand of cards to a player.
+Create an empty list 
+	To hold the cards of the player
+Deal the specified number of cards (num_cards)
+A for loop iterates num_cards times (default is 5).
+During each iteration, the deal() method is called to get the next card from the deck
+Append the dealt card to the hand
+	Card returned by deal() is added to the hand list.l
+After dealing all the cards, the method returns the complete hand (list of cards) to the caller.
+
+1b.Deal(self):
+Returns the card at the current_card index and increments current_card by 1
+The deal() method serves to give a card to the player.
+
+1c.replace_cards(self, hand, cards_to_replace):
+The replace_cards() method is used to replace cards in the player's hand during the game.
+For each card index in cards_to_replace
+ it calls the deal() method to get a new card from the deck and replaces the card in the hand at that index.
+Returns the updated hand with the replaced cards.
 
 Functions used in the Program (list in order as they are called):
 1. Function Name: __init__(self, size)
@@ -13,12 +39,12 @@ Parameters: size (integer): The number of cards in the deck
 Variables:
 1.	self.card_list: A list of integers representing card indices (from 0 - 1). This list is shuffled to randomize the order of cards.
 2.	self.current_card: An integer that tracks the index of the next card to be dealt. It is initially set to 0 due to it being the first card of the deck.
-3.	self.size: The total number of cards in the deck.
+3.	size: The total number of cards in the deck.
 Logical Steps: 
 1.	Initializes self.card_list as a list of integers from 0 to 1
 2.	Shuffles self.card_list using random.shuffle().
 3.	Sets self.current_card to 0 to track the index of the next card
-4.	Sets self.size to the provided size 
+4.	Sets size to the provided size 
 Returns: none
 
 Functions used in the Program (list in order as they are called):
@@ -35,73 +61,47 @@ Logical Steps:
 4.	Returns the card at index self.current_card - 1 from self.card_list.
 Returns: integer value (next card in the deck)
 
-3. Function Name: input()
-Description: user/player can enter which cards they want reshuffled.
-Parameters: none
+3. Function Name: get_card_info
+Description: displaying details about a specific card in a deck.
+Parameters: card (tuple/object): Represents a card, which may be a tuple due to rank/suit or a card object.
 Variables: 
-1.	cards_to_replace: The input(string) from the user- card numbers to be replaced.
+1.	rank (str): The rank of the card
+2.	suit (str): The suit of the card
 Logical Steps: 
-1.	Ask user/player to enter the card numbers (1 to 5) that they want to replace.
-2.	The input is then split by commas and converted into a list of integers, which represent the indices of the cards the user/player wants to replace.
-Returns: A string. Ex: "1, 3, 5",  generate a list of integers [0, 2, 4] (for replacing the first, third, and fifth cards).
+1.	Get rank and suit from the provided card
+2. Format the info into a string 
+Returns: A string representing the card's details in a readable format.
 
-4. Function Name: split(',') and int()
-Description: process user input.
-Parameters: none
+4. Function Name: print_hand
+Description: display the cards in a player's hand
+Parameters: hand (list): A list of cards represent the player's hand.
 Variables:
-1.	cards_to_replace: The user input (string) that needs to be split and converted to integers.
+1.hand_display (str) 
 Logical Steps: 
-1.	The split(',') method splits the user's input string by commas into a list of substrings 
-2.	The int() method converts each substring into an integer, creating a list of integers.
-3.	The integers are then adjusted for 0-based indexing (subtracting 1 from each number).
-Returns: list of integers representing the 0-based indices of the cards to be replaced
+1.	Initialize an empty string (hand_display) to store 
+2.	Loop through the list of cards in hand 
+3.  call get_card_info to retrieve the rank and suit. 
+4. Append the formatted string to hand_display
+5. Print the final hand_display to show the player's hand
+Returns: none
 
-5. Function Name: for loop
-Description: Initial hand dealing
+5. Function Name: play_game
+Description: runs game. deals an initial hand of cards, allows the player to replace some cards, and displays the initial and final hands.
 Parameters: none
 Variables: 
-1.	d: The card dealt (integer value-card index).
-2.	r: The rank of the card (calculated using d % 13).
-3.	s: The suit of the card (calculated using d // 13).
-4.	initial_hand: A list that stores the cards dealt to the player (as a tuple).
+1. deck: used to manage the deck of cards. 
+2. initial_hand: A list representing the initial hand of 5 cards.
+3. cards_to_replace: A list of card indices - the cards that the player wants to replace.
+4. updated_hand: A list representing the final hand after replacing selected cards
 Logical Steps: 
-1.	A loop (for i in range(5)) runs 5 times, dealing 5 cards to the player's hand.
-2.	For each card:
-a.	The deal() method is called to get a card from the deck.
-b.	The card number is processed to determine the rank and suit:
-c.	r = d % 13 gives the rank (0-12).
-d.	s = d // 13 gives the suit (0-3).
-Returns: 5 cards are printed 
-as part of the initial hand. Each card displays the rank and suit.
+1.	Create an instance of the Deck class to represent a shuffled deck of cards.
+2. Call deal_initial_hand() to deal 5 cards from the deck.
+3. Use print_hand() to display the initial hand of cards to the player.
+4. Ask the player/user to input which cards they want to replace.
+5. Call replace_cards() to replace the specified cards in the hand.
+6. Use print_hand() again to show the updated hand after the replacements made.
+Returns: none
 
-
-6. Function Name: for loop (replacing cards)
-Description: replacement of cards
-Parameters: cards_to_replace (list of integers): The indices of the cards the user wants to replace.
-Variables: 
-1.	cards_to_replace: A list of integers representing the indices of the cards the user wants to replace.
-2.	new_card: The new card dealt from the deck to replace an old card.
-3.	r: The rank of the new card.
-4.	s: The suit of the new card.
-Logical Steps: 
-1.	For card index in cards_to_replace, the deal() method is called to draw a new card from the deck.
-2.	The new card is processed to determine its rank and suit.
-3.	The new card replaces the old card at the specified index in the initial_hand list.
-Returns: initial_hand (list) is updated.
-
-7 . Function Name: print( ) – last one 
-Description: prints the users/players list of cards
-Parameters: initial_hand (tuples):
- A list containing the final hand of cards after the replacements. Each card is represented as rank and suit.
-Variables: 
-1.	initial_hand: A list of tuples- the rank and suit of a card.
-2.	card: Each card in initial_hand during iteration.
-3.	ranks: A list containing the rank names 
-4.	suits: A list containing the suit names 
-Logical Steps: 
-1.	the program prints the final hand by iterating over the initial_hand list (updated).
-2.	It prints the rank and suit using the ranks and suits lists.
-Returns: A final hand is printed with the updated cards, showing their rank and suit.
 
 Link to repository: https://github.com/Jhache06/JenniferHache_Chapter-11_A.git
 
